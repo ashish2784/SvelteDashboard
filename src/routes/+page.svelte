@@ -1,8 +1,7 @@
 <script lang="ts">
     import MachineCard from "$lib/components/machinecard.svelte";
     import { Skeleton } from "$lib/components/ui/skeleton";
-    import Sidebar from "$lib/components/sidebar.svelte";
-
+    import Nav from "$lib/components/navbar.svelte";
     import { onMount } from "svelte";
     import { ApiService } from "$lib/services/api";
     import type { Machine } from "$lib/types";
@@ -20,24 +19,21 @@
     let displayMachines = $derived.by(() => {
         let list = [...machines];
 
-        // 1. Filter
         if (statusFilter !== "ALL") {
             list = list.filter((m) => m.status === statusFilter);
         }
 
-        // 2. Sort
         list.sort((a, b) => {
             if (sortBy === "speed") {
-                return b.speed - a.speed; // Fast to slow
+                return b.speed - a.speed;
             }
-            return a.id.localeCompare(b.id); // Alphabetical ID
+            return a.id.localeCompare(b.id);
         });
 
         return list;
     });
 
     async function loadMachines() {
-        // Toggle loading state for visual feedback (spinner on button)
         loading = true;
         error = null;
 
@@ -63,90 +59,61 @@
     });
 </script>
 
-<div class="flex h-screen overflow-hidden bg-slate-50">
-    <!-- Sidebar -->
-    <Sidebar />
+<div class="flex flex-col h-screen overflow-hidden bg-slate-50">
+    <Nav
+        title="Fleet Dashboard"
+        {lastRefreshed}
+        {loading}
+        onRefresh={loadMachines}
+    />
 
-    <!-- Main Content -->
-    <main class="flex-1 p-6 md:p-8 overflow-y-auto">
-        <!-- Header -->
-        <div
-            class="flex flex-col md:flex-row md:items-end justify-between gap-4"
-        >
-            <div>
-                <h1 class="text-2xl font-semibold">Machine Dashboard</h1>
-                <p class="text-sm text-gray-500">
-                    Live overview of factory machines
-                </p>
-            </div>
-            {#if lastRefreshed}
-                <div class="flex items-center gap-4">
-                    <div class="text-xs text-gray-400 font-medium">
-                        Last Refreshed: {lastRefreshed}
-                    </div>
-                    <button
-                        onclick={() => loadMachines()}
-                        disabled={loading}
-                        class="p-2 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm"
-                        aria-label="Refresh Data"
+    <main class="flex-1 p-6 md:p-12 overflow-y-auto">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-10">
+            <div class="flex flex-wrap items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <span
+                        class="text-xs font-bold text-black hover:text-orange-500 uppercase tracking-wider"
+                        >Status</span
                     >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class={`h-4 w-4 ${loading ? "animate-spin" : ""}`}
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                            />
-                        </svg>
-                    </button>
+                    <select
+                        bind:value={statusFilter}
+                        disabled={loading}
+                        class="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-sm font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
+                    >
+                        <option value="ALL">All Units</option>
+                        <option value="ACTIVE">Active</option>
+                        <option value="IDLE">Idle</option>
+                        <option value="BREAKDOWN">Breakdown</option>
+                        <option value="OFFLINE">Offline</option>
+                    </select>
                 </div>
-            {/if}
-        </div>
 
-        <!-- Filters & Sorting -->
-        <div class="mt-8 mb-6 flex flex-wrap items-center gap-4">
-            <div class="flex items-center gap-2">
-                <label
-                    for="status-filter"
-                    class="text-sm font-medium text-gray-600">Status:</label
-                >
-                <select
-                    id="status-filter"
-                    bind:value={statusFilter}
-                    disabled={loading}
-                    class="rounded-md border border-gray-200 bg-white px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-50 disabled:text-gray-400"
-                >
-                    <option value="ALL">All Statuses</option>
-                    <option value="ACTIVE">Active</option>
-                    <option value="IDLE">Idle</option>
-                    <option value="BREAKDOWN">Breakdown</option>
-                    <option value="OFFLINE">Offline</option>
-                </select>
+                <div class="flex items-center gap-2">
+                    <span
+                        class="text-xs font-bold text-black hover:text-orange-500 uppercase tracking-wider"
+                        >Sort</span
+                    >
+                    <select
+                        bind:value={sortBy}
+                        disabled={loading}
+                        class="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-sm font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
+                    >
+                        <option value="id">ID</option>
+                        <option value="speed">Speed</option>
+                    </select>
+                </div>
             </div>
 
-            <div class="flex items-center gap-2">
-                <label for="sort-by" class="text-sm font-medium text-gray-600"
-                    >Sort By:</label
+            <div
+                class="px-3 py-1 bg-slate-100 rounded-lg border border-slate-200"
+            >
+                <span
+                    class="text-[10px] font-black text-black uppercase tracking-tighter"
+                    >Machine Count:</span
                 >
-                <select
-                    id="sort-by"
-                    bind:value={sortBy}
-                    disabled={loading}
-                    class="rounded-md border border-gray-200 bg-white px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:bg-gray-50 disabled:text-gray-400"
+                <span class="text-xs font-black text-black ml-1"
+                    >{displayMachines.length}</span
                 >
-                    <option value="id">Machine ID</option>
-                    <option value="speed">Highest Speed</option>
-                </select>
-            </div>
-
-            <div class="ml-auto text-xs text-gray-400">
-                Showing {displayMachines.length} machines
             </div>
         </div>
 

@@ -1,6 +1,6 @@
 <script lang="ts">
     import { page } from "$app/state";
-    import Sidebar from "$lib/components/sidebar.svelte";
+    import Nav from "$lib/components/navbar.svelte";
     import { Skeleton } from "$lib/components/ui/skeleton";
     import { ApiService } from "$lib/services/api";
 
@@ -8,6 +8,7 @@
     let details = $state<any>(null);
     let loading = $state(true);
     let error = $state<string | null>(null);
+    let lastRefreshed = $state<string | null>(null);
 
     const colorMap: Record<
         string,
@@ -58,6 +59,7 @@
         error = null;
         try {
             details = await ApiService.getMachineDetails(machineId as string);
+            lastRefreshed = new Date().toLocaleTimeString();
         } catch (e: any) {
             error = e.message || "Could not load machine details.";
             console.error(e);
@@ -71,18 +73,46 @@
     });
 </script>
 
-<div class="flex h-screen overflow-hidden bg-slate-50">
-    <Sidebar />
+<Nav
+    title={`${machineId} Overview`}
+    {lastRefreshed}
+    {loading}
+    onRefresh={fetchDetails}
+/>
 
-    <main class="flex-1 p-6 md:p-8 overflow-y-auto">
-        <!-- Breadcrumbs -->
-        <nav class="mb-4 text-sm text-gray-500">
-            <a href="/" class="hover:text-indigo-600 transition-colors"
-                >Dashboard</a
+<div class="flex flex-col min-h-screen bg-slate-50 font-sans">
+    <main class="max-w-7xl mx-auto p-6 md:p-12 w-full">
+        <!-- Navigation Header -->
+        <div class="flex items-center justify-between mb-8">
+            <nav class="text-sm text-gray-500 font-medium">
+                <a href="/" class="text-black">Machines</a>
+                <span class="mx-2">/</span>
+                <span class="text-orange-500 uppercase tracking-wider"
+                    >{machineId}</span
+                >
+            </nav>
+
+            <a
+                href="/"
+                class="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-xl text-slate-600 font-bold text-sm hover:bg-slate-50 hover:text-orange-500 transition-all shadow-sm group"
             >
-            <span class="mx-2">/</span>
-            <span class="font-medium text-gray-800">{machineId}</span>
-        </nav>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-4 w-4 group-hover:-translate-x-1 transition-transform"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                    />
+                </svg>
+                Back to Dashboard
+            </a>
+        </div>
 
         {#if loading}
             <div class="space-y-6">
