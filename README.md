@@ -1,4 +1,4 @@
-RobotSpace Dashboard
+Dashboard
 
 This is a real-time monitoring interface for factory machines. It's built with Svelte 5 and Tailwind CSS.
 
