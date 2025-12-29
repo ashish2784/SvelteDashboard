@@ -2,7 +2,7 @@
     import { page } from "$app/state";
     import Sidebar from "$lib/components/sidebar.svelte";
     import { Skeleton } from "$lib/components/ui/skeleton";
-    import { onMount } from "svelte";
+    import { ApiService } from "$lib/services/api";
 
     let machineId = $derived(page.params.id);
     let details = $state<any>(null);
@@ -10,14 +10,13 @@
     let error = $state<string | null>(null);
 
     async function fetchDetails() {
+        if (!machineId) return;
         loading = true;
         error = null;
         try {
-            const res = await fetch(`/api/machines/${machineId}`);
-            if (!res.ok) throw new Error("Failed to fetch details");
-            details = await res.json();
-        } catch (e) {
-            error = "Could not load machine details.";
+            details = await ApiService.getMachineDetails(machineId as string);
+        } catch (e: any) {
+            error = e.message || "Could not load machine details.";
             console.error(e);
         } finally {
             loading = false;

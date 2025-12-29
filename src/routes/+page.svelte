@@ -4,7 +4,7 @@
     import Sidebar from "$lib/components/sidebar.svelte";
 
     import { onMount } from "svelte";
-    import { transformMachineData } from "$lib/data/transform";
+    import { ApiService } from "$lib/services/api";
     import type { Machine } from "$lib/types";
 
     let machines = $state<Machine[]>([]);
@@ -37,27 +37,15 @@
     });
 
     async function loadMachines(isRefresh = false) {
-        // Only show full loading skeleton if it's the very first load
-        if (!isRefresh) {
-            loading = true;
-        }
+        if (!isRefresh) loading = true;
         error = null;
 
         try {
-            const res = await fetch("/api/machines");
-
-            if (!res.ok) {
-                throw new Error("Failed to fetch machines");
-            }
-
-            const rawData = await res.json();
-            // Transform the raw IoT data into UI format
-            machines = transformMachineData(rawData);
+            machines = await ApiService.getMachines();
             lastRefreshed = new Date().toLocaleTimeString();
-        } catch (err) {
-            // Only show error message if we don't already have data
+        } catch (err: any) {
             if (machines.length === 0) {
-                error = "Unable to load machine data";
+                error = err.message || "Unable to load machine data";
             }
             console.error(err);
         } finally {

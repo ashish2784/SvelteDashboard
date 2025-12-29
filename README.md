@@ -1,38 +1,38 @@
-# sv
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
 
-## Creating a project
+Welcome to the **RobotSpace Dashboard**! This is a modern, real-time monitoring interface for factory machines, built with **Svelte 5** and **Tailwind CSS**.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## ✨ Features
+*   **Live Monitoring**: Automatically polls machine data every 10 seconds.
+*   **Smart Filtering**: Instantly filter by status (Active, Idle, Breakdown, or Offline).
+*   **Advanced Sorting**: Organize your fleet by Machine ID or find your fastest robots by sorting by RPM.
+*   **Deep-Dive Details**: Click any machine to see its installation year, assigned operator, and a 7-day operational history log.
+*   **Resilient Design**: Includes high-quality loading skeletons and robust error-handling with built-in retry logic.
+*   **Chaos Testing**: Equipped with a "Chaos Mode" service layer to simulate real-world network instability for testing.
 
-```sh
-# create a new project in the current directory
-npx sv create
+## 🛠️ Tech Stack
+*   **Framework**: [SvelteKit](https://kit.svelte.dev/) (powered by Svelte 5 Runes)
+*   **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+*   **Icons**: [Lucide Svelte](https://lucide.dev/)
+*   **UI Components**: Custom-built with a focus on premium aesthetics and accessibility.
 
-# create a new project in my-app
-npx sv create my-app
-```
+## 🚀 Getting Started
 
-## Developing
+1.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+2.  **Start the dev server:**
+    ```bash
+    npm run dev
+    ```
 
-```sh
-npm run dev
+3.  **View the dashboard:**
+    Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+## 🧪 Testing "Chaos Mode"
+To see how the dashboard handles network errors and latency, look in `src/lib/services/api.ts`. You can toggle `CHAOS_MODE` to `true` to simulate random failures and artificial delays!
 
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+---
+*Built with ❤️ for a smarter, cleaner factory floor.*
