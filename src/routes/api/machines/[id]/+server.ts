@@ -3,10 +3,8 @@ import { json, error } from "@sveltejs/kit";
 export async function GET({ params }) {
     const { id } = params;
 
-    // Simulate network delay
     await new Promise((r) => setTimeout(r, 800));
 
-    // Mock detailed data/history
     const machines = [
         { id: "M-101", model: "Titan-X1", year: 2023, lastMaintenance: "2023-11-15", operator: "John Doe" },
         { id: "M-102", model: "Titan-X1", year: 2022, lastMaintenance: "2023-10-10", operator: "Jane Smith" },
@@ -21,7 +19,6 @@ export async function GET({ params }) {
         throw error(404, "Machine not found");
     }
 
-    // Add some simulated "history" data
     const history = Array.from({ length: 7 }, (_, i) => ({
         date: new Date(Date.now() - i * 86400000).toISOString().split('T')[0],
         uptime: Math.floor(Math.random() * 24),

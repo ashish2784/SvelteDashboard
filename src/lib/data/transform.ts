@@ -4,10 +4,8 @@ export function transformMachineData(data: any[]): Machine[] {
     if (!Array.isArray(data)) return [];
 
     return data.map((item) => {
-        // Handle missing ID
         const id = item.machine_id || "Unknown";
 
-        // Map status code
         let status: Machine["status"] = "UNKNOWN";
         switch (item.status_code) {
             case 0: status = "OFFLINE"; break;
@@ -17,10 +15,8 @@ export function transformMachineData(data: any[]): Machine[] {
             default: status = "UNKNOWN";
         }
 
-        // Handle speed
         const speed = typeof item.rpm === 'number' ? item.rpm : 0;
 
-        // Handle date
         let updated = "N/A";
         if (item.last_seen) {
             try {
@@ -29,7 +25,7 @@ export function transformMachineData(data: any[]): Machine[] {
                     updated = date.toLocaleTimeString();
                 }
             } catch (e) {
-                // ignore invalid date
+                // ignore invalid
             }
         }
 

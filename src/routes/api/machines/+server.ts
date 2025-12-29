@@ -1,11 +1,7 @@
 import { json } from "@sveltejs/kit";
 
 export async function GET() {
-    // simulate network delay
     await new Promise((r) => setTimeout(r, 1200));
-
-    // Raw IoT Data
-    // status_code: 0=OFFLINE, 1=ACTIVE, 2=IDLE, 3=BREAKDOWN
 
     return json([
         {
@@ -39,9 +35,9 @@ export async function GET() {
             last_seen: new Date().toISOString()
         },
         {
-            // Malformed data test
+            // test case
             machine_id: "M-999",
-            status_code: 99, // Unknown
+            status_code: 99,
             rpm: undefined,
             last_seen: "invalid-date"
         }

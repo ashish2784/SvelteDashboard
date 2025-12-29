@@ -1,38 +1,17 @@
+RobotSpace Dashboard
+
+This is a real-time monitoring interface for factory machines. It's built with Svelte 5 and Tailwind CSS.
+
+Live Monitoring: It automatically pulls machine data every 10 seconds.
+Smart Filtering: You can filter by status like Active, Idle, Breakdown, or Offline.
+Sorting: You can organize machines by ID or by RPM to see which ones are running fastest.
+
+Machine Details: Click on any machine to see its history, who is operating it, and when it was last maintained.
+
+Error Handling: The app includes skeletons for loading and a retry system if the connection fails.
 
 
-Welcome to the **RobotSpace Dashboard**! This is a modern, real-time monitoring interface for factory machines, built with **Svelte 5** and **Tailwind CSS**.
-
-## ✨ Features
-*   **Live Monitoring**: Automatically polls machine data every 10 seconds.
-*   **Smart Filtering**: Instantly filter by status (Active, Idle, Breakdown, or Offline).
-*   **Advanced Sorting**: Organize your fleet by Machine ID or find your fastest robots by sorting by RPM.
-*   **Deep-Dive Details**: Click any machine to see its installation year, assigned operator, and a 7-day operational history log.
-*   **Resilient Design**: Includes high-quality loading skeletons and robust error-handling with built-in retry logic.
-*   **Chaos Testing**: Equipped with a "Chaos Mode" service layer to simulate real-world network instability for testing.
-
-## 🛠️ Tech Stack
-*   **Framework**: [SvelteKit](https://kit.svelte.dev/) (powered by Svelte 5 Runes)
-*   **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-*   **Icons**: [Lucide Svelte](https://lucide.dev/)
-*   **UI Components**: Custom-built with a focus on premium aesthetics and accessibility.
-
-## 🚀 Getting Started
-
-1.  **Install dependencies:**
-    ```bash
-    npm install
-    ```
-
-2.  **Start the dev server:**
-    ```bash
-    npm run dev
-    ```
-
-3.  **View the dashboard:**
-    Open [http://localhost:5173](http://localhost:5173) in your browser.
-
-## 🧪 Testing "Chaos Mode"
-To see how the dashboard handles network errors and latency, look in `src/lib/services/api.ts`. You can toggle `CHAOS_MODE` to `true` to simulate random failures and artificial delays!
-
----
-*Built with ❤️ for a smarter, cleaner factory floor.*
+Quick Start:
+Run npm install to get dependencies.
+Run npm run dev to start the project.
+Open http://localhost:5173 to see it in action.
