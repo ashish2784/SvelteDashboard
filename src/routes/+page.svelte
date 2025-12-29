@@ -36,17 +36,16 @@
         return list;
     });
 
-    async function loadMachines(isRefresh = false) {
-        if (!isRefresh) loading = true;
+    async function loadMachines() {
+        // Toggle loading state for visual feedback (spinner on button)
+        loading = true;
         error = null;
 
         try {
             machines = await ApiService.getMachines();
             lastRefreshed = new Date().toLocaleTimeString();
         } catch (err: any) {
-            if (machines.length === 0) {
-                error = err.message || "Unable to load machine data";
-            }
+            error = err.message || "Unable to load machine data";
             console.error(err);
         } finally {
             loading = false;
@@ -54,19 +53,17 @@
     }
 
     onMount(() => {
-        // Initial load
         loadMachines();
 
-        // Setup polling every 10 seconds
         const interval = setInterval(() => {
-            loadMachines(true);
+            loadMachines();
         }, 10000);
 
         return () => clearInterval(interval);
     });
 </script>
 
-<div class="flex min-h-screen bg-slate-50">
+<div class="flex h-screen overflow-hidden bg-slate-50">
     <!-- Sidebar -->
     <Sidebar />
 
@@ -88,7 +85,7 @@
                         Last Refreshed: {lastRefreshed}
                     </div>
                     <button
-                        onclick={() => loadMachines(true)}
+                        onclick={() => loadMachines()}
                         disabled={loading}
                         class="p-2 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm"
                         aria-label="Refresh Data"
@@ -155,17 +152,23 @@
 
         <!-- ================= STATES ================= -->
 
-        {#if loading}
+        {#if loading && machines.length === 0}
             <!-- Skeleton Grid -->
             <div
-                class="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(260px,1fr))]"
+                class="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))]"
             >
                 {#each Array(4) as _}
-                    <div class="rounded-xl bg-white p-5 shadow-xl space-y-4">
-                        <Skeleton class="h-4 w-1/3" />
-                        <Skeleton class="h-6 w-1/2" />
-                        <Skeleton class="h-10 w-full" />
-                        <Skeleton class="h-3 w-1/4" />
+                    <div class="rounded-xl bg-white p-6 shadow-xl space-y-6">
+                        <div class="flex justify-between">
+                            <Skeleton class="h-6 w-1/3" />
+                            <Skeleton class="h-6 w-1/4 rounded-full" />
+                        </div>
+                        <div class="flex flex-col items-center gap-4">
+                            <Skeleton class="h-32 w-32 rounded-full" />
+                            <Skeleton class="h-12 w-1/2" />
+                            <Skeleton class="h-4 w-1/3" />
+                        </div>
+                        <Skeleton class="h-4 w-1/4" />
                     </div>
                 {/each}
             </div>
@@ -266,7 +269,7 @@
         {:else}
             <!-- Data Loaded -->
             <div
-                class="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(260px,1fr))]"
+                class="grid gap-6 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))]"
             >
                 {#each displayMachines as machine (machine.id)}
                     <MachineCard {machine} />

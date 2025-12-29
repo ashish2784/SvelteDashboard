@@ -77,7 +77,7 @@
 
 <!-- Sidebar Container -->
 <aside
-    class={`fixed inset-y-0 left-0 z-[100] flex flex-col bg-black text-white shadow-2xl transition-all duration-300 md:relative md:h-screen border-r border-slate-800 shrink-0 w-64
+    class={`fixed inset-y-0 left-0 z-[100] flex flex-col bg-black text-white shadow-2xl transition-all duration-300 md:sticky md:top-0 md:h-screen border-r border-slate-800 shrink-0
         ${mobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
         ${collapsed ? "md:w-20" : "md:w-64"}
     `}
@@ -159,5 +159,4 @@
             </svg>
         </button>
     </div>
-
 </aside>

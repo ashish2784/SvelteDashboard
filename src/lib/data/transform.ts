@@ -29,11 +29,20 @@ export function transformMachineData(data: any[]): Machine[] {
             }
         }
 
+        let color: Machine["color"] = "gray";
+        switch (status) {
+            case "ACTIVE": color = "green"; break;
+            case "IDLE": color = "yellow"; break;
+            case "BREAKDOWN": color = "red"; break;
+            default: color = "gray";
+        }
+
         return {
             id,
             status,
             speed,
-            updated
+            updated,
+            color
         };
     });
 }

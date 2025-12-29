@@ -3,6 +3,9 @@ import { json } from "@sveltejs/kit";
 export async function GET() {
     await new Promise((r) => setTimeout(r, 1200));
 
+    // TODO: fetch from API 
+    // status-code: 0 - offline, 1 - active, 2 - idle, 3 - breakdown
+
     return json([
         {
             machine_id: "M-101",
@@ -19,7 +22,7 @@ export async function GET() {
         {
             machine_id: "M-103",
             status_code: 3,
-            rpm: null,
+            rpm: 170,
             last_seen: new Date(Date.now() - 5 * 60000).toISOString()
         },
         {
