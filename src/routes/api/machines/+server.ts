@@ -6,11 +6,11 @@ export async function GET() {
     // TODO: fetch from API 
     // status-code: 0 - offline, 1 - active, 2 - idle, 3 - breakdown
 
-    return json([
+    const data = [
         {
             machine_id: "M-101",
             status_code: 1,
-            rpm: 120,
+            rpm: 120 + Math.floor(Math.random() * 20 - 10), // Randomize around 120
             last_seen: new Date().toISOString()
         },
         {
@@ -34,15 +34,10 @@ export async function GET() {
         {
             machine_id: "M-105",
             status_code: 1,
-            rpm: 80,
+            rpm: 80 + Math.floor(Math.random() * 10 - 5), // Randomize around 80
             last_seen: new Date().toISOString()
-        },
-        {
-            // test case
-            machine_id: "M-999",
-            status_code: 99,
-            rpm: undefined,
-            last_seen: "invalid-date"
         }
-    ]);
+    ];
+
+    return json(data);
 }

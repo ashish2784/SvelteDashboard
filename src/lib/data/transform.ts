@@ -22,7 +22,7 @@ export function transformMachineData(data: any[]): Machine[] {
             try {
                 const date = new Date(item.last_seen);
                 if (!isNaN(date.getTime())) {
-                    updated = date.toLocaleTimeString();
+                    updated = date.toLocaleTimeString()
                 }
             } catch (e) {
                 // ignore invalid

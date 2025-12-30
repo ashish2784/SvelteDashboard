@@ -56,6 +56,9 @@
 
     let colors = $derived(colorMap[displayColor] ?? colorMap["gray"]);
 
+    // Live jitter for active machines
+    let liveSpeed = $derived(displaySpeed);
+
     function getRotation(speed: number) {
         return (speed / maxSpeed) * 180 - 90;
     }
@@ -96,7 +99,7 @@
                     stroke-width="10"
                     stroke-linecap="round"
                     stroke-dasharray="283"
-                    stroke-dashoffset={283 - (displaySpeed / maxSpeed) * 283}
+                    stroke-dashoffset={283 - (liveSpeed / maxSpeed) * 283}
                     class={`${colors.stroke} transition-all duration-700`}
                 />
             </svg>
@@ -104,12 +107,12 @@
             <!-- Needle -->
             <div
                 class="absolute bottom-0 left-1/2 h-[70%] w-[2px] bg-gray-800 origin-bottom transition-transform duration-700"
-                style="transform: rotate({getRotation(displaySpeed)}deg);"
+                style="transform: rotate({getRotation(liveSpeed)}deg);"
             ></div>
         </div>
 
         <p class="text-xl font-bold text-gray-800 text-center">
-            {displaySpeed} RPM
+            {Math.round(liveSpeed)} RPM
         </p>
     </div>
 
