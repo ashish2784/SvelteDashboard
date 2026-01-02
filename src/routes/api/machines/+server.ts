@@ -3,7 +3,6 @@ import { json } from "@sveltejs/kit";
 export async function GET() {
     await new Promise((r) => setTimeout(r, 1200));
 
-    // TODO: fetch from API 
     // status-code: 0 - offline, 1 - active, 2 - idle, 3 - breakdown
 
     const data = [
